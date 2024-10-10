@@ -55,7 +55,7 @@ public partial class SentakkiBeatmapConverter : BeatmapConverter<SentakkiHitObje
         SentakkiHitObject result = original switch
         {
             IHasPathWithRepeats => convertSlider(original),
-            IHasDuration => convertSpinner(original),
+            //IHasDuration => convertSpinner(original),
             _ => convertHitCircle(original)
         };
 

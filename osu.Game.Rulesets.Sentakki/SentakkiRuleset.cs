@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.Sentakki
         private static readonly Lazy<bool> is_development_build
             = new Lazy<bool>(() => typeof(SentakkiRuleset).Assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITTrackingEnabled));
 
-        public static bool IsDevelopmentBuild => is_development_build.Value;
+        public static bool IsDevelopmentBuild => false; // is_development_build.Value;
 
         public override string Description => IsDevelopmentBuild ? "sentakki (Dev build)" : "sentakki";
         public override string PlayingVerb => "Washing laundry";
@@ -137,14 +137,14 @@ namespace osu.Game.Rulesets.Sentakki
             new KeyBinding(InputKey.X, SentakkiAction.Button2),
             new KeyBinding(InputKey.MouseLeft, SentakkiAction.Button1),
             new KeyBinding(InputKey.MouseRight, SentakkiAction.Button2),
-            new KeyBinding(InputKey.Number1, SentakkiAction.Key1),
-            new KeyBinding(InputKey.Number2, SentakkiAction.Key2),
-            new KeyBinding(InputKey.Number3, SentakkiAction.Key3),
-            new KeyBinding(InputKey.Number4, SentakkiAction.Key4),
-            new KeyBinding(InputKey.Number5, SentakkiAction.Key5),
-            new KeyBinding(InputKey.Number6, SentakkiAction.Key6),
-            new KeyBinding(InputKey.Number7, SentakkiAction.Key7),
-            new KeyBinding(InputKey.Number8, SentakkiAction.Key8),
+            new KeyBinding(InputKey.Joystick1, SentakkiAction.Key1),
+            new KeyBinding(InputKey.Joystick2, SentakkiAction.Key2),
+            new KeyBinding(InputKey.Joystick3, SentakkiAction.Key3),
+            new KeyBinding(InputKey.Joystick4, SentakkiAction.Key4),
+            new KeyBinding(InputKey.Joystick5, SentakkiAction.Key5),
+            new KeyBinding(InputKey.Joystick6, SentakkiAction.Key6),
+            new KeyBinding(InputKey.Joystick7, SentakkiAction.Key7),
+            new KeyBinding(InputKey.Joystick8, SentakkiAction.Key8),
         };
 
         public override StatisticItem[] CreateStatisticsForScore(ScoreInfo score, IBeatmap playableBeatmap) => new[]

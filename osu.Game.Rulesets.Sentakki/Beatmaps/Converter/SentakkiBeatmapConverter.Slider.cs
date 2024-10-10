@@ -20,17 +20,17 @@ public partial class SentakkiBeatmapConverter
 
         var slider = (IHasPathWithRepeats)original;
 
-        bool isSuitableSlider = !isLazySlider(original);
+        // bool isSuitableSlider = !isLazySlider(original);
 
         bool isBreak = slider.NodeSamples[0].Any(s => s.Name == HitSampleInfo.HIT_FINISH);
-
+        /*
         if (isSuitableSlider)
         {
             var slide = tryConvertToSlide(original, currentLane);
 
             if (slide is not null)
                 return slide.Value.Item1;
-        }
+        }*/
 
         var hold = new Hold
         {
