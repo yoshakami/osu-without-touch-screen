@@ -1,7 +1,15 @@
 #ifndef SENTAKKI_HEX_NOTE_FS
 #define SENTAKKI_HEX_NOTE_FS
 
-#include "sh_noteBase.fs"
+#include "sh_SDFUtils.fs"
+
+layout(std140, set = 0, binding = 0) uniform m_shapeParameters
+{
+    float thickness;
+    vec2 size;
+    float shadowRadius;
+    bool glow;
+};
 
 // SDF that makes a rounded hexagon
 // Adapted from the Star shader provided at https://iquilezles.org/articles/distfunctions2d/
@@ -40,28 +48,6 @@ float roundedHexSDF(in vec2 p, in vec2 origin, in float h, in float r)
     return length(P) * sign(P.x);
 }
 
-// A simple hex SDF, adapted from https://andrewhungblog.wordpress.com/2018/07/28/shader-art-tutorial-hexagonal-grids/
-// Supports arbitrary heights, while maintaining identical radius
-// This one doesn't support rounded corners
-float hexSDF(in vec2 p, in vec2 origin, in float h, in float r)
-{    
-    vec2 P = p - origin;
-
-    if(abs(P.y) < h/2.0){
-        return abs(P.x) - r;
-    }
-
-    float hexSize = r;
-    const vec2 s = vec2(1, 1.7320508);
-
-    float newY = (abs(P.y) - h/2.0);
-    p = vec2(P.x, newY);
-
-    p = abs(p);
-
-    return max(dot(p, s*.5), p.x) - hexSize;
-}
-
 void main(void) {
     vec2 resolution = v_TexRect.zw - v_TexRect.xy;
     vec2 pixelPos = (v_TexCoord - v_TexRect.xy) / resolution;
@@ -79,15 +65,15 @@ void main(void) {
     float h = size.y - size.x;
 
     float hex = roundedHexSDF(p, c, h, radius);
-    float dotDown = circleSDF(p, c + vec2(0, h * 0.5), borderThickness/4 - 1.5 );
+    float dotDown = circleSDF(p, c + vec2(0, h * 0.5), borderThickness/4 - 1.5);
     float dotUp =  circleSDF(p, c -vec2(0, h * 0.5), borderThickness/4 - 1.5);
 
-    vec4 dotDownShape = sdfToShape(dotDown, borderThickness, 0);
-    vec4 dotUpShape = sdfToShape(dotUp, borderThickness, 0);
+    vec4 dotDownShape = sdfToShape(dotDown, borderThickness, 0, false);
+    vec4 dotUpShape = sdfToShape(dotUp, borderThickness, 0, false);
 
     vec4 r2 = max(dotDownShape - dotUpShape, vec4(0,0,0,0)) + dotUpShape;
 
-    vec4 r = sdfToShape(hex, borderThickness, shadeRadius) + r2;
+    vec4 r = sdfToShape(hex, borderThickness, shadeRadius, glow) + r2;
 
     o_Colour = r;
 }
